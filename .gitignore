@@ -1,0 +1,9 @@
+.DS_Store
+.venv/
+.uv-cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+
+# Model downloads are large and should stay in the user-level Hugging Face cache.
+.cache/
