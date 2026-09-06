@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-09-06T07:46:03Z",
+  "status": "valid_with_prefill_variance",
+  "system": {
+    "model": "MacBook Pro 16-inch (Mac17,8)",
+    "soc": "Apple M5 Pro",
+    "cpu_cores": {
+      "total": 18,
+      "performance": 12,
+      "efficiency": 6
+    },
+    "gpu_cores": 20,
+    "unified_memory_gb": 64,
+    "storage": "2 TB Apple SSD",
+    "os": "macOS 26.6.2"
+  },
+  "power": {
+    "source": "AC Power",
+    "mode_during_run": "High Power",
+    "mode_after_run": "Automatic",
+    "battery_at_start_percent": 29,
+    "battery_at_end_percent": 33,
+    "charging": true
+  },
+  "software": {
+    "python": "3.12.14",
+    "uv": "0.12.10",
+    "mlx": "0.32.2",
+    "mlx_lm": "0.31.3"
+  },
+  "model": {
+    "repository": "mlx-community/Qwen3-8B-4bit",
+    "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+    "download_size_bytes": 4623784971,
+    "quantization": "4-bit",
+    "source": "Hugging Face cache"
+  },
+  "protocol": {
+    "backend": "mlx_lm.benchmark",
+    "batch_size": 1,
+    "warmup_trials_per_configuration": 1,
+    "measured_trials_per_configuration": 5,
+    "delay_between_trials_seconds": 1,
+    "prefill_step_size": 2048,
+    "configuration_order": [
+      "p128_g128",
+      "p128_g256",
+      "p256_g128",
+      "p256_g256",
+      "p512_g128"
+    ]
+  },
+  "preflight": {
+    "cpu_idle_percent": 89.1,
+    "load_average": [3.20, 2.86, 2.29],
+    "swapins_pages": 0,
+    "swapouts_pages": 0
+  },
+  "postflight": {
+    "swapins_pages": 0,
+    "swapouts_pages": 124,
+    "swapout_delta_bytes": 2031616
+  },
+  "results": {
+    "p128_g128": {
+      "prompt_tokens": 128,
+      "generation_tokens": 128,
+      "trials": [
+        {"trial": 1, "prompt_tps": 970.808, "generation_tps": 60.357, "peak_memory_gb": 4.923, "total_seconds": 2.334},
+        {"trial": 2, "prompt_tps": 954.135, "generation_tps": 59.971, "peak_memory_gb": 4.923, "total_seconds": 2.346},
+        {"trial": 3, "prompt_tps": 851.693, "generation_tps": 60.132, "peak_memory_gb": 4.923, "total_seconds": 2.409},
+        {"trial": 4, "prompt_tps": 950.720, "generation_tps": 58.901, "peak_memory_gb": 4.923, "total_seconds": 2.396},
+        {"trial": 5, "prompt_tps": 757.652, "generation_tps": 59.837, "peak_memory_gb": 4.924, "total_seconds": 2.402}
+      ],
+      "summary": {
+        "prompt_tps": {"mean": 897.002, "median": 950.720, "stdev": 90.924, "cv_percent": 10.14},
+        "generation_tps": {"mean": 59.840, "median": 59.971, "stdev": 0.559, "cv_percent": 0.93},
+        "peak_memory_gb": {"mean": 4.923, "median": 4.923},
+        "total_seconds": {"mean": 2.377, "median": 2.396, "stdev": 0.035, "cv_percent": 1.46}
+      }
+    },
+    "p128_g256": {
+      "prompt_tokens": 128,
+      "generation_tokens": 256,
+      "trials": [
+        {"trial": 1, "prompt_tps": 961.842, "generation_tps": 59.411, "peak_memory_gb": 4.923, "total_seconds": 4.529},
+        {"trial": 2, "prompt_tps": 851.183, "generation_tps": 58.965, "peak_memory_gb": 4.923, "total_seconds": 4.624},
+        {"trial": 3, "prompt_tps": 966.958, "generation_tps": 59.273, "peak_memory_gb": 4.923, "total_seconds": 4.526},
+        {"trial": 4, "prompt_tps": 955.354, "generation_tps": 59.393, "peak_memory_gb": 4.923, "total_seconds": 4.533},
+        {"trial": 5, "prompt_tps": 960.152, "generation_tps": 59.790, "peak_memory_gb": 4.924, "total_seconds": 4.497}
+      ],
+      "summary": {
+        "prompt_tps": {"mean": 939.098, "median": 960.152, "stdev": 49.320, "cv_percent": 5.25},
+        "generation_tps": {"mean": 59.366, "median": 59.393, "stdev": 0.297, "cv_percent": 0.50},
+        "peak_memory_gb": {"mean": 4.923, "median": 4.923},
+        "total_seconds": {"mean": 4.542, "median": 4.529, "stdev": 0.048, "cv_percent": 1.06}
+      }
+    },
+    "p256_g128": {
+      "prompt_tokens": 256,
+      "generation_tokens": 128,
+      "trials": [
+        {"trial": 1, "prompt_tps": 1254.696, "generation_tps": 58.949, "peak_memory_gb": 5.063, "total_seconds": 2.465},
+        {"trial": 2, "prompt_tps": 999.798, "generation_tps": 59.793, "peak_memory_gb": 5.063, "total_seconds": 2.480},
+        {"trial": 3, "prompt_tps": 969.328, "generation_tps": 59.795, "peak_memory_gb": 5.064, "total_seconds": 2.487},
+        {"trial": 4, "prompt_tps": 1254.467, "generation_tps": 59.593, "peak_memory_gb": 5.064, "total_seconds": 2.437},
+        {"trial": 5, "prompt_tps": 1257.121, "generation_tps": 59.552, "peak_memory_gb": 5.064, "total_seconds": 2.440}
+      ],
+      "summary": {
+        "prompt_tps": {"mean": 1147.082, "median": 1254.467, "stdev": 148.753, "cv_percent": 12.97},
+        "generation_tps": {"mean": 59.536, "median": 59.593, "stdev": 0.347, "cv_percent": 0.58},
+        "peak_memory_gb": {"mean": 5.064, "median": 5.064},
+        "total_seconds": {"mean": 2.462, "median": 2.465, "stdev": 0.023, "cv_percent": 0.92}
+      }
+    },
+    "p256_g256": {
+      "prompt_tokens": 256,
+      "generation_tokens": 256,
+      "trials": [
+        {"trial": 1, "prompt_tps": 1241.623, "generation_tps": 59.089, "peak_memory_gb": 5.063, "total_seconds": 4.623},
+        {"trial": 2, "prompt_tps": 972.618, "generation_tps": 57.489, "peak_memory_gb": 5.063, "total_seconds": 4.809},
+        {"trial": 3, "prompt_tps": 847.960, "generation_tps": 59.205, "peak_memory_gb": 5.064, "total_seconds": 4.721},
+        {"trial": 4, "prompt_tps": 1258.644, "generation_tps": 59.201, "peak_memory_gb": 5.064, "total_seconds": 4.596},
+        {"trial": 5, "prompt_tps": 852.752, "generation_tps": 58.299, "peak_memory_gb": 5.064, "total_seconds": 4.765}
+      ],
+      "summary": {
+        "prompt_tps": {"mean": 1034.719, "median": 972.618, "stdev": 202.977, "cv_percent": 19.62},
+        "generation_tps": {"mean": 58.657, "median": 59.089, "stdev": 0.754, "cv_percent": 1.29},
+        "peak_memory_gb": {"mean": 5.064, "median": 5.064},
+        "total_seconds": {"mean": 4.703, "median": 4.721, "stdev": 0.091, "cv_percent": 1.94}
+      }
+    },
+    "p512_g128": {
+      "prompt_tokens": 512,
+      "generation_tokens": 128,
+      "trials": [
+        {"trial": 1, "prompt_tps": 666.700, "generation_tps": 58.395, "peak_memory_gb": 5.217, "total_seconds": 3.045},
+        {"trial": 2, "prompt_tps": 1605.855, "generation_tps": 57.363, "peak_memory_gb": 5.217, "total_seconds": 2.625},
+        {"trial": 3, "prompt_tps": 1578.032, "generation_tps": 57.564, "peak_memory_gb": 5.217, "total_seconds": 2.618},
+        {"trial": 4, "prompt_tps": 1165.558, "generation_tps": 56.979, "peak_memory_gb": 5.218, "total_seconds": 2.761},
+        {"trial": 5, "prompt_tps": 1226.206, "generation_tps": 56.894, "peak_memory_gb": 5.218, "total_seconds": 2.747}
+      ],
+      "summary": {
+        "prompt_tps": {"mean": 1248.470, "median": 1226.206, "stdev": 381.498, "cv_percent": 30.56},
+        "generation_tps": {"mean": 57.439, "median": 57.363, "stdev": 0.601, "cv_percent": 1.05},
+        "peak_memory_gb": {"mean": 5.217, "median": 5.217},
+        "total_seconds": {"mean": 2.759, "median": 2.747, "stdev": 0.173, "cv_percent": 6.27}
+      }
+    }
+  },
+  "notes": [
+    "The adapter was connected and macOS High Power mode was enabled for the complete measured matrix.",
+    "Generation throughput is repeatable; coefficient of variation is 0.50% to 1.29% across configurations.",
+    "Prompt throughput is noisy; coefficient of variation is 5.25% to 30.56%, so prompt results should be repeated after the battery is charged and the system has cooled.",
+    "The battery was actively charging from a low state during the run, which is a possible thermal and power confound.",
+    "The 124-page swapout delta is approximately 1.94 MiB and is not material to this workload.",
+    "Direct thermal telemetry was unavailable without privileged system instrumentation."
+  ]
+}
