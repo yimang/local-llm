@@ -4,8 +4,10 @@
 
 The first controlled MLX matrix used AC power, macOS High Power mode, one warmup,
 and five measured trials per configuration. The exact model revision and all raw
-trials are stored in
-[`2026-09-06-m5-pro-qwen3-8b-4bit.json`](2026-09-06-m5-pro-qwen3-8b-4bit.json).
+trials are stored in the
+[`machine-readable record`](2026-09-06-m5-pro-qwen3-8b-4bit.json). See the
+[`full methodology and results report`](2026-09-06-m5-pro-qwen3-8b-4bit.md) for
+reproduction instructions, interpretation, and limitations.
 
 | Prompt | Generate | Median prompt tok/s | Median generation tok/s | Peak memory |
 | ---: | ---: | ---: | ---: | ---: |
