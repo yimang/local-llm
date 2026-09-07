@@ -9,12 +9,12 @@ added with probability .3. No misspellings are injected in this first baseline.
 Output files are replaced only with --overwrite. No network access is used.
 """
 import argparse
-from collections import Counter, defaultdict
 import itertools
 import json
-from pathlib import Path
 import random
 import unicodedata
+from collections import Counter, defaultdict
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 LABELS = {'SUBJECT', 'YEAR', 'SET', 'CARD_NUMBER', 'GAME', 'GRADER', 'GRADE', 'CONDITION'}
@@ -61,7 +61,7 @@ def partition(cards, seed):
         if len(keys) < 10:
             raise ValueError(f'Too few independent subjects for {stratum}')
         n = max(1, len(keys) // 10)
-        for split, selected in zip(result, (keys[2*n:], keys[:n], keys[n:2*n])):
+        for split, selected in zip(result, (keys[2*n:], keys[:n], keys[n:2*n]), strict=True):
             for key in selected:
                 result[split].extend(groups[key])
     return result
@@ -115,7 +115,7 @@ def generate(cards, attrs, count, rng, seen):
     rng.shuffle(schedule)
     records = []
     for game, graded, numbered in schedule:
-        for attempt in range(1000):
+        for _attempt in range(1000):
             subjects = {k: [c for c in v if numbered or c['set_aliases']] for k, v in by_game[game].items()}
             subjects = {k: v for k, v in subjects.items() if v}
             if not subjects:
