@@ -6,11 +6,16 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "mlx-lm>=0.31.3",
+    "numpy>=2.5.2",
     "pyyaml>=6.0.3",
+    "safetensors>=0.8.0",
+    "torch>=2.14.0",
+    "transformers>=5.16.1",
 ]
 
 [dependency-groups]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.16.6",
     "ty>=0.0.78",
 ]
@@ -29,5 +34,6 @@ select = ["E4", "E7", "E9", "F", "I", "B", "UP", "SIM", "RUF"]
 docstring-code-format = true
 
 [tool.ty.environment]
+extra-paths = ["card-oracle/query-segmentation/src"]
 python-version = "3.12"
 python-platform = "darwin"

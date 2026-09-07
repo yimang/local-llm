@@ -1,7 +1,22 @@
 # Query segmentation implementation plan
 
-Updated September 7, 2026. This is the current plan for training, evaluation, and
-inference. [The data specification](docs/data-spec.md) defines synthetic generation.
+Updated September 7, 2026. The demo baseline is implemented and trained.
+See [baseline-results.md](docs/baseline-results.md) for experiments and measured
+results, and [README.md](README.md) for runnable commands. The original baseline
+specification below remains useful as the contract, with these measured changes:
+
+- A frozen linear head reached 85.3% validation exact-span F1; a 256-unit GELU
+  head reached 88.5%. This was insufficient for the intended demo.
+- Adapting the last two encoder layers plus final normalization reached 94.2%.
+- The selected demo adapts all 22 encoder blocks and final normalization, retaining
+  frozen token embeddings and the 256-unit head. Validation F1 is 98.7% and
+  full-query exact match is 95.8%. This change was selected using validation only.
+- Frozen-head runs cache features in process-local float32 RAM after validating
+  all offsets; no cache is persisted or reused. Encoder adaptation uses no cache.
+- Core single/interactive/batch inference and timing are implemented. Optional
+  confidence/debug-token flags are deferred; no confidence claims are made.
+
+The following sections record the initial training, evaluation, and inference plan. [The data specification](docs/data-spec.md) defines synthetic generation.
 
 ## Goal and current state
 
@@ -18,9 +33,9 @@ Completed:
 - Verified generation requirements, grade scales, normalized query uniqueness,
   subject separation, and byte-identical regeneration.
 
-Not implemented: tokenizer alignment, model/head training, checkpoint loading,
-inference, model evaluation, latency benchmarking, and automated regression tests.
-Existing train/eval/infer directories contain documentation only.
+Implemented: tokenizer alignment, model/head training, encoder adaptation, offline
+checkpoint loading, inference, evaluation, benchmarking, and regression tests.
+Downloaded weights, artifacts, and routine reports remain local and ignored.
 
 ## Fixed data and label contracts
 

@@ -1,0 +1,10 @@
+model: answerdotai/ModernBERT-base
+max_length: 128
+batch_size: 16
+learning_rate: 0.001
+weight_decay: 0.01
+epochs: 20
+patience: 3
+seed: 42
+device: auto
+revision: 8949b909ec900327062f0ebf497f51aef5e6f0c8
