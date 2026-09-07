@@ -4,6 +4,9 @@ Extract typed spans from Pokémon, Riftbound, and One Piece search queries.
 Data generation is implemented. Model training, evaluation, and inference are
 planned; there is no trained checkpoint yet.
 
+See [PLAN.md](PLAN.md) for the current training, evaluation, inference, and
+benchmark implementation plan and acceptance checks.
+
 ## Layout
 
 ```text
