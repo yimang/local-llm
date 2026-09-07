@@ -2,6 +2,11 @@
 
 Completely vibe-coded experiments with local large language models.
 
+## Card Oracle
+
+[Trading-card projects](card-oracle/README.md), starting with
+[query segmentation](card-oracle/query-segmentation/README.md).
+
 ## Development setup
 
 This is a non-packaged project using Astral's Python toolchain:

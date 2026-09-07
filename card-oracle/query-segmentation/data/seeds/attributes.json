@@ -1,0 +1,12 @@
+{
+  "set_aliases": {"Riftbound": {"Origins": ["OGN"], "Spiritforged": ["SFD"], "Unleashed": ["UNL"], "Vendetta": ["VEN"]}},
+  "games": {"Pokemon": ["pokemon", "pokémon", "pokemon tcg"], "Riftbound": ["riftbound", "riftbound tcg"], "One Piece": ["one piece", "one piece tcg"]},
+  "graders": {
+    "PSA": {"aliases": ["psa"], "grades": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]},
+    "Beckett": {"aliases": ["beckett", "bgs"], "grades": ["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10"]},
+    "SGC": {"aliases": ["sgc"], "grades": ["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10"]},
+    "CGC": {"aliases": ["cgc"], "grades": ["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10"]},
+    "TAG": {"aliases": ["tag"], "grades": ["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "10"]}
+  },
+  "conditions": {"Near Mint": ["near mint", "nm"], "Lightly Played": ["lightly played", "lp"], "Moderately Played": ["moderately played", "mp"], "Heavily Played": ["heavily played", "hp"], "Damaged": ["damaged", "dmg"]}
+}
