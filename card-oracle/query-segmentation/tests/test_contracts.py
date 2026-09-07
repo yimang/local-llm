@@ -1,7 +1,14 @@
+import json
+
 import pytest
-from cardseg.data import LABELS, collate, encode
+import torch
+from cardseg.data import LABELS, collate, encode, read_data
 from cardseg.decode import decode
 from cardseg.metrics import score
+
+
+def label_logits(ids):
+    return torch.nn.functional.one_hot(torch.tensor(ids), len(LABELS)).float()
 
 
 class Tokenizer:
@@ -25,7 +32,9 @@ def test_unicode_repeated_subwords_and_padding():
     tokenizer = Tokenizer([(0, 0), (0, 1), (1, 3), (3, 5), (5, 7), (0, 0)])
     row = encode(tokenizer, query, spans)
     assert row["labels"] == [-100, 1, 2, 1, 2, -100]
-    decoded, repairs = decode(query, row["offsets"], [max(0, t) for t in row["labels"]])
+    decoded, repairs = decode(
+        query, row["offsets"], label_logits([max(0, t) for t in row["labels"]])
+    )
     assert [{k: s[k] for k in ("start", "end", "label")} for s in decoded] == spans
     assert repairs == 0
     short = encode(Tokenizer([(0, 0), (0, 1), (0, 0)]), "x")
@@ -57,7 +66,9 @@ def test_crossing_and_overlength():
 
 def test_repair_and_exact_metrics():
     spans, repairs = decode(
-        "abc def", [(0, 3), (4, 7)], [LABELS.index("I-SUBJECT"), LABELS.index("I-GAME")]
+        "abc def",
+        [(0, 3), (4, 7)],
+        label_logits([LABELS.index("I-SUBJECT"), LABELS.index("I-GAME")]),
     )
     assert repairs == 2
     metrics = score([[dict(start=0, end=3, label="SUBJECT")]], [spans])
@@ -95,3 +106,40 @@ def test_whitespace_skips_tokenizer_and_model():
     result = predictor.predict(" " * 10000, timing=True)
     assert result["segments"] == []
     assert result["timing_ms"]["forward"] == 0
+
+
+@pytest.mark.parametrize("annotations", [None, {}, "SUBJECT", 1])
+def test_dataset_rejects_non_list_annotations(tmp_path, annotations):
+    path = tmp_path / "train.jsonl"
+    path.write_text(json.dumps({"query": "abc", "spans": annotations}) + "\n")
+    with pytest.raises(ValueError, match=r"train.jsonl:1: spans must be a list"):
+        read_data(path, Tokenizer([(0, 3)]))
+
+
+def test_explicit_negative_and_unlabeled_inference(tmp_path):
+    path = tmp_path / "train.jsonl"
+    path.write_text(json.dumps({"query": "abc", "spans": []}) + "\n")
+    tokenizer = Tokenizer([(0, 0), (0, 3), (0, 0)])
+    assert read_data(path, tokenizer)[0]["labels"] == [-100, 0, -100]
+    assert encode(tokenizer, "abc")["spans"] is None
+
+
+def test_overlap_pools_logits_and_preserves_adjacent_entities():
+    # A strong GAME vote beats two weak SUBJECT votes in a shared character.
+    logits = label_logits([0, 1, 3, 1, 1, 0])
+    logits[2, 3] = 5
+    spans, _ = decode("🔥x", [(0, 0), (0, 1), (0, 1), (0, 1), (1, 2), (0, 0)], logits)
+    assert spans == [
+        dict(start=0, end=1, label="GAME", text="🔥"),
+        dict(start=1, end=2, label="SUBJECT", text="x"),
+    ]
+    spans, _ = decode("ab", [(0, 1), (1, 2)], label_logits([1, 1]))
+    assert [s["text"] for s in spans] == ["a", "b"]
+
+
+def test_transitive_overlap_and_outside_vote():
+    spans, repairs = decode("abcd", [(0, 2), (1, 3), (2, 4)], label_logits([2, 2, 2]))
+    assert spans == [dict(start=0, end=4, label="SUBJECT", text="abcd")]
+    assert repairs == 1
+    spans, _ = decode("🔥", [(0, 1), (0, 1), (0, 1)], label_logits([0, 0, 1]))
+    assert spans == []

@@ -46,9 +46,7 @@ class Predictor:
             logits = self.model(batch["input_ids"], batch["attention_mask"])
         self.sync()
         forwarded = time.perf_counter()
-        result["segments"], repairs = decode(
-            query, row["offsets"], logits[0].argmax(-1).tolist()
-        )
+        result["segments"], repairs = decode(query, row["offsets"], logits[0])
         end = time.perf_counter()
         if timing:
             result["timing_ms"] = dict(

@@ -79,6 +79,9 @@ The benchmark synchronizes MPS and separates model loading from warm requests.
 The committed 8,000/1,000/1,000 synthetic splits are unchanged. Labels are SUBJECT,
 GAME, SET, CARD_NUMBER, YEAR, GRADER, GRADE, and CONDITION, represented as 17 BIO
 classes. Offsets are zero-based, end-exclusive Python Unicode character indices.
+Tokens with overlapping character offsets (such as byte-level emoji pieces) share
+one BIO decision from their mean logits. Labeled datasets must supply a `spans`
+list; use `[]` for negative examples. Null annotations are rejected.
 
 Every generated query has a subject, year, set alias OR card number, and raw
 condition OR grader/grade; GAME is optional. Held-out subject names share template

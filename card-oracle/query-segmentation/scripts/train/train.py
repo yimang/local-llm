@@ -21,9 +21,14 @@ import torch
 import yaml
 from cardseg.artifacts import save_artifact
 from cardseg.data import collate, read_data
-from cardseg.decode import decode
 from cardseg.metrics import score
 from cardseg.model import Segmenter, choose_device
+from cardseg.training import (
+    decode_batch,
+    fingerprint,
+    validate_config,
+    write_reload_reference,
+)
 from torch.nn.utils.rnn import pad_sequence
 from transformers import AutoTokenizer
 
@@ -56,14 +61,9 @@ def evaluate_head(head, rows, features, batch_size):
     with torch.no_grad():
         for i in range(0, len(rows), batch_size):
             logits = head(pad_sequence(features[i : i + batch_size], batch_first=True))
-            for row, pred in zip(
-                rows[i : i + batch_size], logits.argmax(-1).tolist(), strict=True
-            ):
-                spans, fixed = decode(
-                    row["query"], row["offsets"], pred[: len(row["offsets"])]
-                )
-                predictions.append(spans)
-                repairs += fixed
+            spans, fixed = decode_batch(rows[i : i + batch_size], logits)
+            predictions.extend(spans)
+            repairs += fixed
     metrics = score([r["spans"] for r in rows], predictions)
     metrics["bio_repairs"] = repairs
     return metrics
@@ -89,13 +89,10 @@ def main():
             config[key] = getattr(args, key)
     if args.tiny:
         config["patience"] = config["epochs"]
-    if any(
-        config[k] <= 0
-        for k in ("epochs", "batch_size", "max_length", "patience", "learning_rate")
-    ):
-        parser.error(
-            "epochs, batch size, length, patience, and learning rate must be positive"
-        )
+    try:
+        validate_config(config)
+    except ValueError as exc:
+        parser.error(str(exc))
     if args.tiny is not None and args.tiny <= 0:
         parser.error("--tiny must be positive")
     random.seed(config["seed"])
@@ -127,9 +124,7 @@ def main():
         head_hidden=config.get("head_hidden", 0),
         revision=config.get("revision"),
     ).to(device)
-    frozen_before = hashlib.sha256(
-        b"".join(p.detach().cpu().numpy().tobytes() for p in model.encoder.parameters())
-    ).hexdigest()
+    frozen_before = fingerprint(model.encoder.parameters())
     head_before = copy.deepcopy(model.head.state_dict())
     estimated = (
         sum(len(r["input_ids"]) for r in train + val)
@@ -202,9 +197,7 @@ def main():
             break
     assert best_state is not None
     model.head.load_state_dict(best_state)
-    frozen_after = hashlib.sha256(
-        b"".join(p.detach().cpu().numpy().tobytes() for p in model.encoder.parameters())
-    ).hexdigest()
+    frozen_after = fingerprint(model.encoder.parameters())
     assert frozen_before == frozen_after, "Encoder changed during head-only training"
     assert any(
         not torch.equal(head_before[k].cpu(), v) for k, v in best_state.items()
@@ -233,6 +226,9 @@ def main():
         determinism="Seeded Python/PyTorch; hardware-dependent numerical nondeterminism possible",
     )
     save_artifact(args.output, model, tokenizer, summary)
+    write_reload_reference(
+        args.output / "reload-reference.json", model, tokenizer, val[:3]
+    )
     print(f"Saved {args.output}; best epoch {best_epoch}; F1 {best_f1:.6f}", flush=True)
 
 

@@ -18,16 +18,14 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from cardseg.artifacts import load_artifact, save_artifact
 from cardseg.data import collate, read_data
-from cardseg.decode import decode
 from cardseg.metrics import score
 from cardseg.model import choose_device
-
-
-def fingerprint(parameters):
-    digest = hashlib.sha256()
-    for p in parameters:
-        digest.update(p.detach().cpu().numpy().tobytes())
-    return digest.hexdigest()
+from cardseg.training import (
+    decode_batch,
+    fingerprint,
+    validate_config,
+    write_reload_reference,
+)
 
 
 def main():
@@ -39,6 +37,10 @@ def main():
     if args.output.exists():
         parser.error("output already exists")
     config = yaml.safe_load(args.config.read_text())
+    try:
+        validate_config(config)
+    except ValueError as exc:
+        parser.error(str(exc))
     random.seed(config["seed"])
     torch.manual_seed(config["seed"])
     torch.set_num_threads(4)
@@ -52,6 +54,7 @@ def main():
     model.trainable_layers = layers
     model.encoder.layers[-layers:].requires_grad_(True)
     model.encoder.final_norm.requires_grad_(True)
+    trainable_names = {name for name, p in model.named_parameters() if p.requires_grad}
     frozen = [p for p in model.encoder.parameters() if not p.requires_grad]
     adaptable = [p for p in model.encoder.parameters() if p.requires_grad]
     before = fingerprint(frozen)
@@ -103,11 +106,8 @@ def main():
                 rows = val[i : i + config["batch_size"]]
                 batch = collate(rows, tokenizer.pad_token_id, device)
                 logits = model(batch["input_ids"], batch["attention_mask"])
-                for row, ids in zip(rows, logits.argmax(-1).tolist(), strict=True):
-                    spans, _ = decode(
-                        row["query"], row["offsets"], ids[: len(row["offsets"])]
-                    )
-                    predictions.append(spans)
+                spans, _ = decode_batch(rows, logits)
+                predictions.extend(spans)
         metrics = score([r["spans"] for r in val], predictions)
         history.append(dict(epoch=epoch, loss=loss_total / count, validation=metrics))
         print(
@@ -126,10 +126,7 @@ def main():
             best_state = {
                 k: v.detach().cpu().clone()
                 for k, v in model.state_dict().items()
-                if k.startswith("head.")
-                or any(
-                    k == name for name, p in model.named_parameters() if p.requires_grad
-                )
+                if k in trainable_names
             }
         else:
             stale += 1
@@ -161,16 +158,9 @@ def main():
     }
     summary.pop("encoder_sha256", None)
     save_artifact(args.output, model, tokenizer, summary)
-    # Store saving-process logits, then verify these in a separate offline process.
-    model.to("cpu").eval()
-    reference = []
-    for row in val[:3]:
-        batch = collate([row], tokenizer.pad_token_id, "cpu")
-        with torch.no_grad():
-            logits = model(batch["input_ids"], batch["attention_mask"])[0].cpu()
-        spans, _ = decode(row["query"], row["offsets"], logits.argmax(-1).tolist())
-        reference.append(dict(query=row["query"], logits=logits.tolist(), spans=spans))
-    (args.output / "reload-reference.json").write_text(json.dumps(reference) + "\n")
+    write_reload_reference(
+        args.output / "reload-reference.json", model, tokenizer, val[:3]
+    )
     print(
         f"Saved {args.output}; best epoch {best_epoch}; validation F1 {best:.6f}",
         flush=True,
