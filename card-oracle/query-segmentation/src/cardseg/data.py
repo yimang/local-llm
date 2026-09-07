@@ -88,6 +88,8 @@ def read_data(path, tokenizer, max_length=128):
     for line, raw in enumerate(Path(path).read_text().splitlines(), 1):
         try:
             row = json.loads(raw)
+            if not isinstance(row["spans"], list):
+                raise ValueError("spans must be a list; use [] for negative examples")
             rows.append(encode(tokenizer, row["query"], row["spans"], max_length))
         except (ValueError, KeyError, TypeError) as exc:
             raise ValueError(f"{path}:{line}: {exc}") from exc

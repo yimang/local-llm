@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -81,3 +82,28 @@ def test_batch_errors_continue(tmp_path):
     assert [r["id"] for r in rows] == ["ok", "empty"]
     assert '"line": 2' in result.stderr
     assert '"id": "long"' in result.stderr
+
+
+@pytest.mark.parametrize(
+    "query", ["🔥 pikachu psa 10", "皮卡丘 psa 10", "ピカチュウ psa 10"]
+)
+def test_real_unicode_offsets_do_not_overlap(query):
+    import torch
+    from cardseg.data import LABELS, encode
+    from cardseg.decode import decode
+    from transformers import AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        MODEL / "tokenizer", local_files_only=True
+    )
+    row = encode(tokenizer, query)
+    offsets = row["offsets"]
+    ordinary = [(s, e) for s, e in offsets if s != e]
+    assert any(a[1] > b[0] for a, b in pairwise(ordinary))
+    # Force alternating entity labels, including on tokens sharing a character.
+    logits = torch.zeros(len(offsets), len(LABELS))
+    for i in range(len(offsets)):
+        logits[i, 1 if i % 2 else 3] = 1
+    spans, _ = decode(query, offsets, logits)
+    assert all(a["end"] <= b["start"] for a, b in pairwise(spans))
+    assert all(s["text"] == query[s["start"] : s["end"]] for s in spans)

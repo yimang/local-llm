@@ -12,7 +12,7 @@ whole requests and components, plus offline model loading separately. Initial
 model downloads and network service latency are excluded.
 
 `verify_artifact.py --model-dir DIR --reference DIR/reload-reference.json` compares
-fine-tuning-process logits with a freshly loaded model offline (atol/rtol 1e-5),
-and requires identical token labels and character spans. `--write-reference`
-can instead create a comparison fixture from an existing artifact and verify it
-in a child process; this latter mode checks repeated loading, not training export.
+training-process logits with a freshly loaded model offline (atol/rtol 1e-5),
+and requires identical token labels and character spans. Both training commands
+write `reload-reference.json` from the in-memory trained model. The verifier only
+reads these references; it never creates them from an already-loaded artifact.
