@@ -1,0 +1,131 @@
+{
+  "run": {
+    "settings": {
+      "model": {
+        "vocab_size": 16000,
+        "context": 512,
+        "layers": 6,
+        "width": 512,
+        "heads": 8,
+        "dropout": 0.1
+      },
+      "seed": 42,
+      "microbatch": 4,
+      "accumulation": 8,
+      "max_steps": 18311,
+      "warmup_steps": 200,
+      "learning_rate": 0.00025,
+      "weight_decay": 0.01,
+      "eval_every": 200,
+      "eval_batches": 16,
+      "save_every": 1000,
+      "log_every": 10
+    },
+    "device": "mps",
+    "torch": "2.14.0",
+    "parameters": 27368448,
+    "data_sha256": "56c507de2f65e296be2d6ba2c85a965cf2a0a308922855e7d4b060020b9969d4"
+  },
+  "resumed_session": {
+    "last_step": 1221,
+    "tokens_this_session": 18366464,
+    "wall_seconds": 833.5683024159998
+  },
+  "validation_history": [
+    {
+      "step": 100,
+      "tokens_processed": 1638400,
+      "train_loss": 7.286020755767822,
+      "learning_rate": 0.000125,
+      "grad_norm": 0.44549688696861267,
+      "tokens_per_second": 22514.90666432605,
+      "validation_loss": 7.235118240118027,
+      "perplexity": 1387.3049235799244
+    },
+    {
+      "step": 200,
+      "tokens_processed": 3276800,
+      "train_loss": 6.523881375789642,
+      "learning_rate": 0.00025,
+      "grad_norm": 0.9227398037910461,
+      "tokens_per_second": 22523.676371974405,
+      "validation_loss": 6.5451904237270355,
+      "perplexity": 695.8891801447837
+    },
+    {
+      "step": 400,
+      "tokens_processed": 6553600,
+      "train_loss": 5.7074174880981445,
+      "learning_rate": 0.00024992478380955367,
+      "grad_norm": 0.925331711769104,
+      "tokens_per_second": 22502.17299311957,
+      "validation_loss": 5.879749029874802,
+      "perplexity": 357.7194535462083
+    },
+    {
+      "step": 600,
+      "tokens_processed": 9830400,
+      "train_loss": 5.496571063995361,
+      "learning_rate": 0.0002496992257578195,
+      "grad_norm": 0.9499631524085999,
+      "tokens_per_second": 22573.93595057935,
+      "validation_loss": 5.473504215478897,
+      "perplexity": 238.29376409806486
+    },
+    {
+      "step": 800,
+      "tokens_processed": 13107200,
+      "train_loss": 5.154016196727753,
+      "learning_rate": 0.00024932359729467555,
+      "grad_norm": 0.8880521655082703,
+      "tokens_per_second": 22541.045170616566,
+      "validation_loss": 5.205733746290207,
+      "perplexity": 182.31459636191715
+    },
+    {
+      "step": 1000,
+      "tokens_processed": 16384000,
+      "train_loss": 5.026506423950195,
+      "learning_rate": 0.00024879835047359416,
+      "grad_norm": 0.6983506083488464,
+      "tokens_per_second": 22637.774922715515,
+      "validation_loss": 4.998510897159576,
+      "perplexity": 148.19232111184803
+    },
+    {
+      "step": 1200,
+      "tokens_processed": 19660800,
+      "train_loss": 4.758669316768646,
+      "learning_rate": 0.00024812411740761413,
+      "grad_norm": 0.7921552658081055,
+      "tokens_per_second": 22638.100756757347,
+      "validation_loss": 4.839357793331146,
+      "perplexity": 126.38815834328588
+    },
+    {
+      "step": 1221,
+      "tokens_processed": 20004864,
+      "train_loss": 4.926119327545166,
+      "learning_rate": 0.000248044711272143,
+      "grad_norm": 0.9341632723808289,
+      "tokens_per_second": 22590.954036534316,
+      "validation_loss": 4.831964701414108,
+      "perplexity": 125.45720462495416
+    }
+  ],
+  "final_metrics": {
+    "step": 1221,
+    "tokens_processed": 20004864,
+    "train_loss": 4.926119327545166,
+    "learning_rate": 0.000248044711272143,
+    "grad_norm": 0.9341632723808289,
+    "tokens_per_second": 22590.954036534316,
+    "validation_loss": 4.831964701414108,
+    "perplexity": 125.45720462495416
+  },
+  "checkpoint": {
+    "path": "gpt1/runs/wiki-small/latest.pt",
+    "sha256": "a2addd1a874ac871baab934efe5d95fcc85089409e6a90e861efc128ad8828fa",
+    "bytes": 328507515
+  }
+}

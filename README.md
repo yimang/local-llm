@@ -2,6 +2,11 @@
 
 Completely vibe-coded experiments with local large language models.
 
+## GPT-1 reproduction
+
+[Small GPT-1 experiment](gpt1/README.md): prepare 100M Wikipedia tokens, train a
+27.4M-parameter decoder from scratch, and measure the benefit of pretraining.
+
 ## Card Oracle
 
 [Trading-card projects](card-oracle/README.md), starting with

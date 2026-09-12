@@ -1,0 +1,14 @@
+{
+  "model": {"vocab_size": 16000, "context": 512, "layers": 6, "width": 512, "heads": 8, "dropout": 0.1},
+  "seed": 42,
+  "microbatch": 4,
+  "accumulation": 8,
+  "max_steps": 18311,
+  "warmup_steps": 200,
+  "learning_rate": 0.00025,
+  "weight_decay": 0.01,
+  "eval_every": 200,
+  "eval_batches": 16,
+  "save_every": 1000,
+  "log_every": 10
+}

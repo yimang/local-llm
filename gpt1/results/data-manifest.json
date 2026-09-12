@@ -1,0 +1,52 @@
+{
+  "source": {
+    "repo": "wikimedia/wikipedia",
+    "snapshot": "20231101.en",
+    "revision": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+    "shuffle_buffer": 1000,
+    "url": "https://huggingface.co/datasets/wikimedia/wikipedia",
+    "license": "See source dataset card and Wikipedia attribution/share-alike terms"
+  },
+  "seed": 42,
+  "targets": {
+    "train": 100000000,
+    "validation": 1000000,
+    "test": 1000000
+  },
+  "requested_vocab_size": 16000,
+  "tokenizer_chars_target": 10000000,
+  "min_chars": 200,
+  "dedup": "whitespace-normalized exact text and article id",
+  "split": "sha256(seed:article_id) modulo 10000; validation <100, test <200",
+  "dtype": "uint16",
+  "byte_order": "little",
+  "document_boundary": "<|endoftext|>",
+  "counts": {
+    "train": {
+      "tokens": 100000737,
+      "articles": 138146,
+      "text_bytes": 381744036
+    },
+    "validation": {
+      "tokens": 1001563,
+      "articles": 1380,
+      "text_bytes": 3818570
+    },
+    "test": {
+      "tokens": 1003446,
+      "articles": 1341,
+      "text_bytes": 3859315
+    }
+  },
+  "vocab_size": 16000,
+  "tokenizer_training_chars": 10010186,
+  "tokenizer_sha256": "93aa49297dc55ac8c5b9205bf03155ccd7fad729c6d1b0a2c031f2b926ebc4e0",
+  "files": {
+    "test.bin": "676b9fd524c877ada305acad9bb3aefd565cbf0e2617aea89b6fce90922cfb3c",
+    "test.jsonl": "59efd1aa1d668fb1bdc1d0393343f8ce12a2bf4d84f69fa41b4ff68571641ea3",
+    "train.bin": "b2d1c85af0ea81059ab391a55aca9df98ca38d6a86e2925768ca94603ac2cf81",
+    "train.jsonl": "9e2131d7e008389713c281f0fbbc3bd17ad8666a8b9228e2c300a734b6194bb7",
+    "validation.bin": "e810581baaee549ac784dba73027124ac65c47cc523fe0658d205255f9655d59",
+    "validation.jsonl": "b165cd598ec7ab41312a90bc1332a6d53c71bde726ce990ccf3e6a19be325c59"
+  }
+}

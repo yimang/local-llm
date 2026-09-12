@@ -7,3 +7,7 @@ __pycache__/
 
 # Model downloads are large and should stay in the user-level Hugging Face cache.
 .cache/
+
+# Reproducible GPT-1 datasets and model checkpoints (large, generated artifacts).
+gpt1/data/
+gpt1/runs/

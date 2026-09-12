@@ -1,0 +1,25 @@
+{
+  "last_step": 100,
+  "tokens_this_session": 1638400,
+  "wall_seconds": 73.94186587500008,
+  "first_step": {
+    "step": 1,
+    "tokens_processed": 16384,
+    "train_loss": 9.654723048210144,
+    "learning_rate": 1.25e-06,
+    "grad_norm": 1.6356592178344727,
+    "tokens_per_second": 18306.52365436991
+  },
+  "last_step_metrics": {
+    "step": 100,
+    "tokens_processed": 1638400,
+    "train_loss": 7.286020755767822,
+    "learning_rate": 0.000125,
+    "grad_norm": 0.44549688696861267,
+    "tokens_per_second": 22514.90666432605,
+    "validation_loss": 7.235118240118027,
+    "perplexity": 1387.3049235799244
+  },
+  "median_tokens_per_second_after_warmup": 22520.056762068,
+  "data_integrity_verified": true
+}

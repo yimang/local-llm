@@ -1,0 +1,35 @@
+[
+  {
+    "device": "mps",
+    "torch": "2.14.0",
+    "microbatch": 1,
+    "parameters": 27368448,
+    "tokens_per_second": 8691.900145725303,
+    "hours_100m_excluding_eval": 3.1958233886797416,
+    "hours_300m_excluding_eval": 9.587470166039225,
+    "current_allocated_bytes": 438951936,
+    "driver_allocated_bytes": 1202438144
+  },
+  {
+    "device": "mps",
+    "torch": "2.14.0",
+    "microbatch": 2,
+    "parameters": 27368448,
+    "tokens_per_second": 12645.79115271192,
+    "hours_100m_excluding_eval": 2.196602604165321,
+    "hours_300m_excluding_eval": 6.5898078124959625,
+    "current_allocated_bytes": 439484416,
+    "driver_allocated_bytes": 2294054912
+  },
+  {
+    "device": "mps",
+    "torch": "2.14.0",
+    "microbatch": 4,
+    "parameters": 27368448,
+    "tokens_per_second": 16563.63708331447,
+    "hours_100m_excluding_eval": 1.6770337117419687,
+    "hours_300m_excluding_eval": 5.031101135225906,
+    "current_allocated_bytes": 440025088,
+    "driver_allocated_bytes": 2426175488
+  }
+]
