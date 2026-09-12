@@ -16,6 +16,10 @@ Apple GPU using PyTorch MPS. Validation perplexity fell from 1,387 to 125.5.
 Generated text has recognizable Wikipedia phrasing but remains unreliable and
 repetitive. See [measured results and sample outputs](results/README.md).
 
+The [benchmark plan and context handoff](BENCHMARK_PLAN.md) records the research
+and next agreed action: a short full-size GPT-1 throughput benchmark on this Mac,
+before choosing a longer training run. MLX porting is deferred.
+
 Code, configuration, tests, and small result records are tracked in Git. Dataset
 files and model weights are local artifacts; a fresh clone must prepare the data
 and train a checkpoint before running inference. MLX is not used by this experiment.
